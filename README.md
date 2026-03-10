@@ -1,3 +1,22 @@
+<p align="center">
+  <img src="assets/bdk-banner.png" alt="Bilge Development Kit" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="Status">
+  <img src="https://img.shields.io/badge/Version-1.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/Agents-22-blue" alt="Agents">
+  <img src="https://img.shields.io/badge/Core_Skills-56-green" alt="Core Skills">
+  <img src="https://img.shields.io/badge/Extra_Skills-37-lightgrey" alt="Extra Skills">
+  <img src="https://img.shields.io/badge/Workflows-15-orange" alt="Workflows">
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
+  <br>
+  <img src="https://img.shields.io/badge/Claude_Code-Compatible-blueviolet" alt="Claude Code">
+  <img src="https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4" alt="Gemini CLI">
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs Welcome">
+  <a href="https://buymeacoffee.com/bilgeai"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
+</p>
+
 # Bilge Development Kit (BDK)
 
 **Tek bir AI assistant'ı, 22 uzmandan oluşan bir geliştirici ekibine dönüştürün.**
