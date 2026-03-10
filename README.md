@@ -1,101 +1,95 @@
 # Bilge Development Kit (BDK)
 
-AI coding assistant'inizi 23 uzman agent, 96 skill, 15 workflow ve otomatik guvenlik korumasi ile donatin. Claude Code ve Gemini ile calisir.
+**Tek bir AI assistant'ı, 23 uzmandan oluşan bir geliştirici ekibine dönüştürün.**
+
+BDK, Claude Code ve Gemini gibi AI coding assistant'larına uzman davranışları, otomatik güvenlik korumaları ve yapılandırılmış iş akışları kazandıran modüler bir toolkit'tir. Hiçbir runtime dependency'si yoktur -- tamamı markdown dosyaları ve shell script'lerden oluşur. Projenizin `.agent/` dizinine kopyalayın, AI assistant'ınız artık hangi uzmanı çağıracağını, hangi kuralları uygulayacağını ve hangi güvenlik kontrollerini yapacağını bilir.
+
+```
+23 Agent | 96 Skill | 15 Workflow | 4 Hook | 5 Always-On Rule | 3 Context Mode
+```
 
 ---
 
 ## Table of Contents
 
-- [Overview](#overview)
+- [Neden BDK?](#neden-bdk)
 - [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [Agents (23)](#agents-23)
-- [Skills (96)](#skills-96)
-- [Slash Commands (15)](#slash-commands-15)
-- [Hooks - Automated Guardrails (4)](#hooks---automated-guardrails-4)
-- [Always-On Rules (5)](#always-on-rules-5)
-- [Contexts (3)](#contexts-3)
-- [Scripts (6)](#scripts-6)
-- [MCP Configuration](#mcp-configuration)
-- [How It Works](#how-it-works)
-- [Customization](#customization)
-- [Statistics](#statistics)
+- [Mimari](#mimari)
+- [Agent'lar (23)](#agentlar-23)
+- [Skill'ler (96)](#skilller-96)
+- [Slash Komutları (18)](#slash-komutları-18)
+- [Hooks -- Otomatik Korumalar (4)](#hooks----otomatik-korumalar-4)
+- [Always-On Kurallar (5)](#always-on-kurallar-5)
+- [Context Modları (3)](#context-modları-3)
+- [Script'ler (6)](#scriptler-6)
+- [MCP Konfigürasyonu](#mcp-konfigürasyonu)
+- [Nasıl Çalışır?](#nasıl-çalışır)
+- [Özelleştirme](#özelleştirme)
+- [Gereksinimler](#gereksinimler)
 
 ---
 
-## Overview
+## Neden BDK?
 
-BDK, AI coding assistant'inizi "genel amacli chatbot" seviyesinden "uzman gelistirici ekibi" seviyesine cikarir.
+AI coding assistant'lar güçlüdür ama jeneriktir. "React component yaz" dediğinizde çalışan bir kod üretir -- ama projenizin stil kurallarını bilmez, güvenlik açıklarını kontrol etmez, test yazmayı unutabilir ve `rm -rf /` komutunu sorgulamadan çalıştırabilir.
 
-**Ne yapar:**
-- Istegi otomatik siniflandirir (soru mu, kod mu, tasarim mi?)
-- Dogru uzman agent'i secer (frontend? backend? security?)
-- O agent'in skill'lerini yukler (react-best-practices, api-patterns, vb.)
-- Her kod ciktisinda always-on kurallari uygular (guvenlik, stil, test)
-- Hooks ile tehlikeli islemleri otomatik engeller (secret leak, rm -rf)
+BDK bu boşluğu doldurur:
 
-**Ne YAPMAZ:**
-- Kendi basina calistirilmaz - Claude Code veya Gemini icinde calisir
-- Runtime dependency'si yoktur - tamami markdown + shell script
-- Projenize kod eklemez - sadece AI assistant'in davranisini yonlendirir
+**Jenerik assistant yerine uzman ekip.** Her istek otomatik olarak doğru uzmana yönlendirilir. Frontend görevi? `frontend-specialist` agent'ı devreye girer ve `react-best-practices`, `tailwind-patterns` gibi domain-specific bilgiyi yükler. Güvenlik taraması? `security-auditor` OWASP checklist'ini uygular.
+
+**Kodlamadan önce düşünme.** Karmaşık isteklerde Sokratik Kapı devreye girer: "E-commerce sitesi yap" derseniz, Claude önce mimari kararları netleştirmek için sorular sorar. Tek satıcı mı çok satıcı mı? Ödeme yöntemi ne? Minimum 3 soru, cevap almadan kodlama yok.
+
+**Otomatik güvenlik ağı.** Hooks sistemi arka planda çalışır: dosyalara yazılan secret'ları yakalar, yıkıcı komutları engeller, her düzenlemeden sonra lint kontrolü yapar. Siz fark etmeden.
+
+**Tutarlı kalite.** Always-on kurallar her kod çıktısına uygulanır: Conventional Commits formatı, camelCase/snake_case tutarlılığı, %80 test coverage hedefi, Core Web Vitals limitleri. Agent değişse bile standart değişmez.
 
 ---
 
 ## Quick Start
 
-### 1. Repoyu klonla veya kopyala
+### 1. Projenize ekleyin
 
 ```bash
-# Mevcut projenize .agent klasoru olarak kopyalamak icin
-git clone https://github.com/user/bilge-dev-kit.git
-cp -r bilge-dev-kit/.agent your-project/.agent
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+cp -r bilge-development-kit/.agent your-project/.agent
 ```
 
-Veya dogrudan proje kokunde kullanin:
+### 2. Platforma göre ayarlayın
 
-```bash
-cd your-project
-# .agent/ dizinini proje kokune yerlestirin
-```
+**Claude Code:** Otomatik çalışır. `.agent/CLAUDE.md` dosyasını otomatik okur. Hooks için `.agent/.claude/settings.json` yerinde olmalıdır.
 
-### 2. Claude Code icin
+**Gemini:** `.agent/rules/GEMINI.md` dosyasını projenizin AI ayarlarında referans gösterin.
 
-Claude Code `.agent/CLAUDE.md` dosyasini otomatik olarak okur. Ek konfigurasyona gerek yoktur.
-
-Hooks'lari etkinlestirmek icin `.agent/.claude/settings.json` dosyasinin yerinde oldugundan emin olun.
-
-### 3. Gemini icin
-
-Gemini `.agent/rules/GEMINI.md` dosyasini referans alir. Projenizin AI ayarlarinda bu dosyayi isaretleyin.
-
-### 4. Kullanmaya basla
+### 3. Kullanmaya başlayın
 
 ```
-/brainstorm authentication system
-/create user registration page
-/review
-/build-fix
+/brainstorm authentication system     # Farklı yaklaşımları karşılaştır
+/plan e-commerce MVP                  # Görev kırılımı oluştur
+/create user profile page             # Sıfırdan implement et
+/review                               # Kod review yap
+/build-fix                            # Build hatalarını otomatik çöz
+/security full scan                   # Güvenlik denetimi
 ```
 
 ---
 
-## Architecture
+## Mimari
 
 ```
 .agent/
-├── ARCHITECTURE.md              # Sistem haritasi
-├── CLAUDE.md                    # Claude Code protokol kurallari
-├── mcp_config.json.example      # MCP sunucu sablonu
+├── ARCHITECTURE.md              # Sistem haritası
+├── CLAUDE.md                    # Claude Code protokol kuralları
+├── mcp_config.json.example      # MCP sunucu şablonu
 │
 ├── agents/                      # 23 Uzman Agent
 │   ├── orchestrator.md          #   Multi-agent koordinasyon
 │   ├── frontend-specialist.md   #   Web UI/UX
-│   ├── backend-specialist.md    #   API, is mantigi
+│   ├── backend-specialist.md    #   API, iş mantığı
 │   ├── security-auditor.md      #   OWASP, zero trust
-│   └── ...                      #   +19 daha
+│   └── ...                      #   +19 uzman daha
 │
 ├── .claude/
-│   ├── settings.json            # Hooks konfigurasyonu
+│   ├── settings.json            # Hooks konfigürasyonu
 │   └── skills/                  # 96 Domain Skill
 │       ├── react-best-practices/
 │       ├── api-patterns/
@@ -109,97 +103,98 @@ Gemini `.agent/rules/GEMINI.md` dosyasini referans alir. Projenizin AI ayarlarin
 │   └── ...
 │
 ├── rules/                       # Global Kurallar
-│   ├── CLAUDE.md                #   Claude Code kurallari
-│   ├── GEMINI.md                #   Gemini kurallari
+│   ├── CLAUDE.md                #   Claude Code kuralları
+│   ├── GEMINI.md                #   Gemini kuralları
 │   └── common/                  #   Always-on standartlar
-│       ├── git-workflow.md
-│       ├── coding-style.md
-│       ├── testing.md
-│       ├── security.md
-│       └── performance.md
+│       ├── git-workflow.md      #   Commit formatı, branch naming
+│       ├── coding-style.md      #   Naming conventions, dosya organizasyonu
+│       ├── testing.md           #   Test zorunlulukları, coverage hedefleri
+│       ├── security.md          #   Secret yönetimi, OWASP korumaları
+│       └── performance.md       #   Core Web Vitals, bundle limitleri
 │
-├── contexts/                    # Mod Bazli Davranis
-│   ├── dev.md                   #   Gelistirme modu
+├── contexts/                    # Mod Bazlı Davranış
+│   ├── dev.md                   #   Geliştirme modu
 │   ├── review.md                #   Kod review modu
-│   └── research.md              #   Arastirma modu
+│   └── research.md              #   Araştırma modu
 │
-├── scripts/                     # Otomasyon Araclar
-│   ├── hooks/                   #   Guardrail scriptleri
+├── scripts/                     # Otomasyon Araçları
+│   ├── hooks/                   #   Guardrail script'leri
 │   │   ├── dangerous_cmd_check.sh
 │   │   ├── secret_scanner.sh
 │   │   ├── lint_check.sh
 │   │   └── session_save.sh
-│   ├── detect_pm.py             #   PM auto-detection
-│   ├── checklist.py             #   Proje dogrulama
-│   ├── verify_all.py            #   Kapsamli test suite
-│   ├── auto_preview.py          #   Dev server yonetimi
+│   ├── detect_pm.py             #   Package manager tespiti
+│   ├── checklist.py             #   Proje doğrulama
+│   ├── verify_all.py            #   Kapsamlı test suite
+│   ├── auto_preview.py          #   Dev server yönetimi
 │   └── session_manager.py       #   Proje analizi
 │
 └── .shared/
-    └── ui-ux-pro-max/           # UI/UX kaynaklari (CSV data)
+    └── ui-ux-pro-max/           # UI/UX kaynakları (CSV data)
 ```
 
-### Istek Isleme Akisi
+### İstek İşleme Akışı
+
+Her kullanıcı isteği 5 aşamadan geçer:
 
 ```
-Kullanici Istegi
-    |
-    v
-[1. Siniflandirma] --> Soru? Kod? Tasarim? Survey?
-    |
-    v
-[2. Agent Secimi] --> frontend-specialist? backend-specialist? debugger?
-    |
-    v
-[3. Skill Yukleme] --> Agent'in frontmatter'indaki skills: listesi
-    |
-    v
-[4. Kural Uygulama] --> Always-on rules + agent-specific rules
-    |
-    v
-[5. Hooks] --> Secret scan, lint check, session save
-    |
-    v
-Cikti
+Kullanıcı İsteği
+    │
+    ▼
+[1. Sınıflandırma]  →  Soru mu? Kod mu? Tasarım mı? Araştırma mı?
+    │
+    ▼
+[2. Agent Seçimi]   →  frontend-specialist? backend-specialist? debugger?
+    │
+    ▼
+[3. Skill Yükleme]  →  Agent'ın frontmatter'ındaki skills: listesi okunur
+    │
+    ▼
+[4. Kural Uygulama] →  Always-on rules (güvenlik, stil, test, performans)
+    │
+    ▼
+[5. Hooks]          →  Secret tarama, lint kontrolü, session kayıt
+    │
+    ▼
+  Çıktı
 ```
 
 ---
 
-## Agents (23)
+## Agent'lar (23)
 
-Her agent bir `.md` dosyasidir. Icinde persona, yetenekler ve yuklenecek skill listesi vardir.
+Her agent bir `.md` dosyasıdır. İçinde persona tanımı, uzmanlık alanı, uyması gereken ilkeler ve yüklemesi gereken skill listesi bulunur. İstek geldiğinde BDK doğru agent'ı otomatik seçer -- siz belirtmek zorunda değilsiniz.
 
-| Agent | Alan | Tipik Kullanim |
-|-------|------|----------------|
-| `orchestrator` | Multi-agent koordinasyon | 3+ domain iceren karmasik gorevler |
-| `project-planner` | Kesif, planlama | Yeni proje baslangici, gorev kirma |
-| `frontend-specialist` | Web UI/UX | React, Next.js, Tailwind |
-| `backend-specialist` | API, is mantigi | Express, FastAPI, veritabani |
-| `database-architect` | Sema, SQL | Migrasyon, indexleme, normalizasyon |
-| `mobile-developer` | Mobil | React Native, Flutter, SwiftUI |
-| `game-developer` | Oyun | Unity, Godot, Phaser |
-| `ai-engineer` | AI/ML | LLM app, RAG, agent gelistirme |
-| `data-engineer` | Veri | ETL, Spark, dbt, Airflow |
-| `devops-engineer` | Altyapi | CI/CD, Docker, Kubernetes |
-| `security-auditor` | Guvenlik | OWASP, supply chain, zero trust |
-| `penetration-tester` | Saldiri | Red team, exploit gelistirme |
-| `test-engineer` | Test | TDD, unit/integration/E2E |
-| `qa-automation-engineer` | E2E | Playwright, Cypress, CI entegrasyon |
-| `debugger` | Hata ayiklama | Root cause analysis, crash investigation |
-| `performance-optimizer` | Performans | Web Vitals, profiling, bottleneck |
-| `seo-specialist` | SEO | Ranking, structured data, Core Web Vitals |
-| `documentation-writer` | Dokumantasyon | API docs, README, teknik rehber |
-| `product-manager` | Urun | Gereksinimler, user story, PRD |
-| `product-owner` | Strateji | Backlog, MVP, onceliklendirme |
-| `api-designer` | API tasarimi | REST, GraphQL, gRPC |
-| `code-archaeologist` | Legacy kod | Eski kod analizi, modernizasyon |
-| `explorer-agent` | Kesif | Codebase tarama, deep analysis |
+| Agent | Uzmanlık | Ne Zaman Devreye Girer |
+|-------|----------|------------------------|
+| `orchestrator` | Multi-agent koordinasyon | 3+ alanı kapsayan karmaşık görevler |
+| `project-planner` | Keşif ve planlama | Yeni proje başlangıcı, görev kırılımı |
+| `frontend-specialist` | Web UI/UX | React, Next.js, Tailwind, component tasarımı |
+| `backend-specialist` | API ve iş mantığı | Express, FastAPI, veritabanı entegrasyonu |
+| `database-architect` | Şema tasarımı | Migrasyon, indexleme, normalizasyon, query optimizasyonu |
+| `mobile-developer` | Mobil geliştirme | React Native, Flutter, SwiftUI |
+| `game-developer` | Oyun geliştirme | Unity, Godot, Phaser, oyun mekaniği |
+| `ai-engineer` | AI/ML mühendisliği | LLM uygulamaları, RAG sistemleri, agent geliştirme |
+| `data-engineer` | Veri mühendisliği | ETL pipeline'ları, Spark, dbt, Airflow |
+| `devops-engineer` | Altyapı ve operasyon | CI/CD, Docker, Kubernetes, production ops |
+| `security-auditor` | Güvenlik denetimi | OWASP, supply chain güvenliği, zero trust |
+| `penetration-tester` | Sızma testi | Red team operasyonları, exploit geliştirme |
+| `test-engineer` | Test mühendisliği | TDD, unit/integration/E2E test stratejisi |
+| `qa-automation-engineer` | Otomasyon testi | Playwright, Cypress, CI entegrasyonu |
+| `debugger` | Hata ayıklama | Root cause analizi, crash investigation |
+| `performance-optimizer` | Performans | Web Vitals, profiling, bottleneck tespiti |
+| `seo-specialist` | SEO optimizasyonu | Ranking, structured data, Core Web Vitals |
+| `documentation-writer` | Teknik dokümantasyon | API docs, README, kullanım kılavuzları |
+| `product-manager` | Ürün yönetimi | Gereksinim analizi, user story, PRD |
+| `product-owner` | Ürün stratejisi | Backlog yönetimi, MVP tanımlama, önceliklendirme |
+| `api-designer` | API tasarımı | REST, GraphQL, gRPC şema ve kontrat tasarımı |
+| `code-archaeologist` | Legacy kod | Eski kod analizi, modernizasyon stratejisi |
+| `explorer-agent` | Codebase keşfi | Derinlemesine kod tarama ve analiz |
 
-### Agent Nasil Calisir?
+### Agent Yapısı
 
 ```markdown
 # agents/frontend-specialist.md
-
 ---
 name: frontend-specialist
 skills:
@@ -210,189 +205,186 @@ skills:
 ---
 
 ## Persona
-Sen deneyimli bir frontend gelistiricisin...
+Sen 10+ yıl deneyimli bir senior frontend geliştiricisin...
 
-## Ilkeler
-1. Component-first dusun
-2. Accessibility (WCAG 2.1 AA) zorunlu
+## İlkeler
+1. Component-first düşün: her UI parçası yeniden kullanılabilir olmalı
+2. Accessibility (WCAG 2.1 AA) zorunlu, dekorasyon değil
+3. Performance budget: LCP < 2.5s, CLS < 0.1
 ...
 ```
 
-Bir frontend gorevi geldiginde:
-1. Claude `agents/frontend-specialist.md` dosyasini okur
-2. Frontmatter'daki `skills:` listesini yukler
-3. O agent'in persona ve ilkelerini uygular
+Bir frontend görevi geldiğinde Claude bu dosyayı okur, `skills:` listesindeki bilgi modüllerini yükler ve o agent'ın persona ile ilkelerini uygulayarak yanıt verir.
 
 ---
 
-## Skills (96)
+## Skill'ler (96)
 
-Skill'ler agent'larin yukledigi bilgi modulleridir. Her biri bir `SKILL.md` dosyasi ve opsiyonel `scripts/`, `references/`, `assets/` klasorleri icerir.
+Skill'ler, agent'ların görev sırasında yüklediği domain-specific bilgi modülleridir. Her skill bir `SKILL.md` dosyası ve opsiyonel `scripts/`, `references/`, `assets/` alt klasörleri içerir. Agent'lar sadece ihtiyaç duydukları skill'leri yükler -- tamamını değil.
 
-### Kategoriler
-
-| Kategori | Skill Sayisi | Ornekler |
-|----------|-------------|----------|
-| AI & LLM | 24 | `ai-engineer`, `rag-engineer`, `langchain-architecture`, `llm-evaluation` |
-| Backend & API | 8 | `api-patterns`, `fastapi-pro`, `nodejs-best-practices` |
-| Frontend & UI | 4 | `react-best-practices`, `tailwind-patterns`, `frontend-design` |
-| Testing & Quality | 8 | `tdd-workflow`, `webapp-testing`, `code-review-checklist` |
-| Security | 2 | `vulnerability-scanner`, `red-team-tactics` |
-| DevOps & Infra | 9 | `deployment-procedures`, `grafana-dashboards`, `prometheus-configuration` |
-| Data & ML | 5 | `data-engineer`, `ml-engineer`, `airflow-dag-patterns` |
-| Architecture | 6 | `architecture`, `app-builder`, `plan-writing` |
-| Code Quality | 6 | `clean-code`, `refactoring-patterns`, `code-refactoring-tech-debt` |
-| Documentation | 5 | `readme`, `documentation-templates`, `writing-skills` |
-| Python | 3 | `python-patterns`, `python-packaging`, `python-testing-patterns` |
-| Rust | 1 | `rust-pro` |
-| Shell/CLI | 3 | `bash-linux`, `powershell-windows`, `linux-shell-scripting` |
-| Mobile & Game | 2 | `mobile-design`, `game-development` |
-| SEO | 2 | `seo-fundamentals`, `geo-fundamentals` |
-| Caching & Performance | 2 | `caching-patterns`, `performance-profiling` |
-| Agent Behavior | 3 | `behavioral-modes`, `parallel-agents`, `mcp-builder` |
-| Build | 1 | `build-fix` |
-| Database | 1 | `database-design` |
-| Brainstorming | 1 | `brainstorming` |
+| Kategori | Sayı | Örnekler |
+|----------|------|----------|
+| **AI & LLM** | 24 | `ai-engineer`, `rag-engineer`, `langchain-architecture`, `llm-evaluation`, `agent-memory-systems` |
+| **Backend & API** | 8 | `api-patterns`, `fastapi-pro`, `nodejs-best-practices`, `backend-dev-guidelines` |
+| **Frontend & UI** | 4 | `react-best-practices`, `tailwind-patterns`, `frontend-design`, `web-design-guidelines` |
+| **Testing & Quality** | 8 | `tdd-workflow`, `webapp-testing`, `code-review-checklist`, `verification-before-completion` |
+| **DevOps & Infra** | 9 | `deployment-procedures`, `grafana-dashboards`, `prometheus-configuration`, `monitoring-observability` |
+| **Security** | 2 | `vulnerability-scanner`, `red-team-tactics` |
+| **Architecture** | 6 | `architecture`, `app-builder`, `plan-writing`, `architecture-decision-records` |
+| **Code Quality** | 6 | `clean-code`, `refactoring-patterns`, `code-refactoring-tech-debt` |
+| **Data & ML** | 5 | `data-engineer`, `ml-engineer`, `mlops-engineer`, `airflow-dag-patterns` |
+| **Documentation** | 5 | `readme`, `documentation-templates`, `code-documentation-doc-generate` |
+| **Python** | 3 | `python-patterns`, `python-packaging`, `python-testing-patterns` |
+| **Shell/CLI** | 3 | `bash-linux`, `powershell-windows`, `linux-shell-scripting` |
+| **Mobile & Game** | 2 | `mobile-design`, `game-development` |
+| **SEO** | 2 | `seo-fundamentals`, `geo-fundamentals` |
+| **Caching & Perf** | 2 | `caching-patterns`, `performance-profiling` |
+| **Agent Behavior** | 3 | `behavioral-modes`, `parallel-agents`, `mcp-builder` |
+| **Diğer** | 4 | `rust-pro`, `database-design`, `build-fix`, `brainstorming` |
 
 ---
 
-## Slash Commands (15)
+## Slash Komutları (18)
 
-`/komut` yazarak tetiklenen workflow'lar:
+Chat'e `/komut` yazarak tetiklenen yapılandırılmış iş akışları. 15 workflow komutu + 3 skill komutu.
 
-| Komut | Aciklama | Ornek Kullanim |
-|-------|----------|----------------|
-| `/brainstorm` | Fikir kesfi. 3+ opsiyon, artilari/eksileri, oneri. | `/brainstorm auth system` |
-| `/create` | Sifirdan feature/component olusturma. | `/create user profile page` |
-| `/debug` | Sistematik hata ayiklama. | `/debug login 500 error` |
-| `/deploy` | Deployment sureci yonetimi. | `/deploy production` |
-| `/enhance` | Mevcut kodu iyilestirme. | `/enhance search performance` |
-| `/orchestrate` | Birden fazla agent'i koordine etme. | `/orchestrate full-stack auth` |
-| `/plan` | Gorevi alt gorevlere kirma. | `/plan e-commerce MVP` |
-| `/preview` | Dev server baslat/durdur. | `/preview start 3000` |
-| `/refactor` | Sistematik yeniden yapilandirma. | `/refactor extract auth service` |
-| `/review` | Kod review (guvenlik, performans, stil). | `/review` |
-| `/security` | Guvenlik denetimi. | `/security full scan` |
-| `/status` | Proje durumu kontrolu. | `/status` |
-| `/test` | Test suite calistirma. | `/test unit` |
-| `/ui-ux-pro-max` | 50 farkli stilde UI tasarimi. | `/ui-ux-pro-max dashboard` |
-| `/build-fix` | Build hatalarini otomatik tespit ve cozum. | `/build-fix` |
+### Workflow Komutları
 
-### Ek Skill Komutlari
+| Komut | Ne Yapar | Örnek |
+|-------|----------|-------|
+| `/brainstorm` | Bir konu hakkında 3+ farklı yaklaşım üretir. Her opsiyonun artılarını, eksilerini ve effort seviyesini karşılaştırır. Sonunda net bir öneri sunar. Kod yazmaz, karar vermenize yardımcı olur. | `/brainstorm auth system` |
+| `/create` | Sıfırdan yeni feature, component veya modül oluşturur. İsteğin domainine göre doğru uzman agent'ı otomatik seçer, gerekli tüm dosyaları yaratır ve tam çalışan bir implementasyon sağlar. | `/create user profile page` |
+| `/debug` | Bug'ı sistematik 4 aşamalı süreçle araştırır: semptom toplama, hipotez oluşturma, kök neden analizi, fix uygulama. Log'ları, stack trace'leri ve hata pattern'lerini analiz eder. | `/debug login 500 error` |
+| `/deploy` | Deployment sürecini uçtan uca yönetir. Environment kontrolü, CI/CD pipeline hazırlığı, rollback planı oluşturma ve deploy sonrası doğrulama adımlarını kapsar. | `/deploy production` |
+| `/enhance` | Mevcut çalışan kodu iyileştirir. Performans optimizasyonu, okunabilirlik artırma veya yeni yetenek ekleme. Mevcut davranışı bozmadan, test'leri kırmadan geliştirir. | `/enhance search performance` |
+| `/orchestrate` | 3+ farklı alanı kapsayan karmaşık görevlerde birden fazla uzman agent'ı koordine eder. Planlama → paralel implementasyon → doğrulama fazlarını yönetir. En güçlü komut. | `/orchestrate full-stack auth` |
+| `/plan` | Görevi alt görevlere kırar. Her görevin bağımlılıklarını, önceliğini ve tamamlanma kriterlerini belirler. Karmaşık işlere başlamadan önce net bir yol haritası çizer. | `/plan e-commerce MVP` |
+| `/preview` | Dev server'ı başlatır, durdurur veya durumunu kontrol eder. Port çakışmalarını yönetir, hot reload desteği sağlar. | `/preview start 3000` |
+| `/refactor` | Kodu sistematik yeniden yapılandırır. Extract method, SOLID prensipleri, strangler fig pattern gibi kanıtlanmış teknikleri uygular. Davranışı değiştirmeden iç yapıyı iyileştirir. | `/refactor extract auth service` |
+| `/review` | Kapsamlı kod review yapar. Güvenlik açıkları, performans sorunları, stil tutarsızlıkları, test eksiklikleri ve breaking change'leri kontrol eder. Her bulguyu severity seviyesiyle (Critical/Major/Minor/Nit) raporlar. | `/review` |
+| `/security` | Güvenlik denetimi uygular. OWASP top 10 taraması, hardcoded secret kontrolü, dependency vulnerability audit, input validation ve authentication/authorization kontrolü. | `/security full scan` |
+| `/status` | Projenin anlık durumunu analiz eder. Tech stack tespiti, dosya yapısı haritası, sağlık kontrolü, eksik bağımlılıklar ve konfigürasyon sorunlarını detaylı raporlar. | `/status` |
+| `/test` | Test suite'i çalıştırır. Package manager'ı otomatik tespit eder (npm/yarn/pnpm/bun), unit/integration/E2E testleri koşar ve başarısız testleri detaylı raporlar. | `/test unit` |
+| `/ui-ux-pro-max` | 50 farklı tasarım stiliyle UI/UX oluşturur. Renk paletleri, ikon setleri, grafik stilleri ve ürün layout'larından oluşan CSV veri tabanlarından ilham alır. 12 farklı tech stack desteği (React, Flutter, SwiftUI, vb.). | `/ui-ux-pro-max dashboard` |
+| `/build-fix` | Build ve compile hatalarını otomatik tespit edip çözer. Hata çıktısını parse eder, yaygın pattern'lerle eşleştirir (eksik dependency, type error, import hatası, version conflict) ve fix uygular. Başarısız olursa max 3 iterasyon dener. | `/build-fix` |
 
-| Komut | Aciklama |
+### Skill Komutları
+
+| Komut | Ne Yapar |
 |-------|----------|
-| `/brainstorming` | Sokratik sorgulama + 3 zorunlu soru + multi-agent design review |
-| `/simplify` | Degistirilen kodu kalite ve verimlilik icin gozden gecirme |
-| `/loop` | Bir komutu tekrarlayan araliklarla calistirma (`/loop 5m /status`) |
+| `/brainstorming` | Karmaşık isteklerde otomatik devreye giren Sokratik sorgulama protokolü. Kodlamaya başlamadan önce minimum 3 mimari sonuçlu soru sorar -- her soru bir implementasyon kararına bağlıdır. İleri seviye kullanımda 5 agent'lı (Primary Designer, Skeptic, Constraint Guardian, User Advocate, Arbiter) yapılandırılmış design review süreci başlatır. |
+| `/simplify` | Son yapılan değişiklikleri kalite gözüyle tarar: tekrar eden kod blokları, gereksiz karmaşıklık, kullanılmayan import'lar ve verimlilik sorunlarını tespit eder. Bulgu varsa otomatik düzeltir. |
+| `/loop` | Bir komutu belirli aralıklarla tekrar çalıştırır. Varsayılan süre 10 dakika. Deploy sonrası monitoring, CI durumu takibi veya periyodik sağlık kontrolü için idealdir. Örnek: `/loop 5m /status` |
 
 ---
 
-## Hooks - Automated Guardrails (4)
+## Hooks -- Otomatik Korumalar (4)
 
-Hooks, Claude Code'un yerlesik hook sistemini kullanarak otomatik calisir. Kullanici mudahalesi gerekmez.
+Hooks, Claude Code'un yerleşik hook sistemini kullanarak arka planda otomatik çalışan güvenlik ve kalite kontrolleridir. Siz bir şey yapmanıza gerek yok -- her dosya yazımında, her komut çalıştırmasında ve her session sonunda devredeler.
 
-Konfigurasyon: `.agent/.claude/settings.json`
+Konfigürasyon: `.agent/.claude/settings.json`
 
 | Hook | Olay | Tetikleyici | Ne Yapar |
 |------|------|------------|----------|
-| `dangerous_cmd_check.sh` | PreToolUse | Bash komutlari | `rm -rf /`, `git push --force`, `DROP TABLE` gibi yikici komutlari engeller |
-| `secret_scanner.sh` | PreToolUse | Write, Edit | AWS key, OpenAI key, JWT, Stripe key gibi secret pattern'leri tarar |
-| `lint_check.sh` | PostToolUse | Edit, Write | Dosya degisikliginden sonra ESLint/Ruff/JSON syntax kontrolu yapar |
-| `session_save.sh` | Stop | Her session sonu | Session context ozetini memory'ye kaydeder |
+| `dangerous_cmd_check.sh` | PreToolUse | Bash komutları | `rm -rf /`, `git push --force`, `DROP TABLE`, `git reset --hard` gibi geri dönüşü olmayan komutları tespit eder ve çalıştırılmadan **engeller**. |
+| `secret_scanner.sh` | PreToolUse | Write, Edit | Dosyaya yazılmak üzere olan içerikte AWS Access Key, OpenAI API key, GitHub PAT, Stripe key, JWT token gibi 15+ secret pattern'i tarar. Eşleşme bulursa **engeller**. |
+| `lint_check.sh` | PostToolUse | Edit, Write | Her dosya değişikliğinden sonra dosya türüne göre uygun linter'ı çalıştırır: JS/TS için ESLint, Python için Ruff, JSON/YAML için syntax doğrulama. Hataları Claude'a bildirir. |
+| `session_save.sh` | Stop | Her session sonu | Claude yanıt vermeyi tamamladığında session context özetini `.agent/.claude/memory/` dizinine kaydeder. Sonraki session'larda bağlam kaybını azaltır. |
 
-### Hook Calisma Mantigi
+### Nasıl Çalışır?
 
 ```
-Kullanici: "rm -rf /" iceren komut calistir
-    |
-    v
+Kullanıcı: "rm -rf /" içeren komut çalıştır
+    │
+    ▼
 [PreToolUse:Bash hook tetiklenir]
-    |
-    v
-dangerous_cmd_check.sh --> Pattern eslesti!
-    |
-    v
-Exit code 2 + stderr mesaji --> ENGELLENDI
-    |
-    v
-Claude'a geri bildirim: "Bu komut yikici, alternatif oneriyorum..."
+    │
+    ▼
+dangerous_cmd_check.sh → Pattern eşleşti!
+    │
+    ▼
+Exit code 2 + stderr mesajı → ENGELLENDİ
+    │
+    ▼
+Claude'a geri bildirim: "Bu komut yıkıcı. Daha güvenli bir alternatif öneriyorum..."
 ```
 
 ---
 
-## Always-On Rules (5)
+## Always-On Kurallar (5)
 
-`rules/common/` altindaki kurallar her kod ciktisina otomatik uygulanir:
+`rules/common/` altındaki kurallar her kod çıktısına otomatik uygulanır. Hangi agent aktif olursa olsun, hangi skill yüklenirse yüklensin bu kurallar geçerlidir.
 
-| Kural | Icerik |
-|-------|--------|
-| **git-workflow.md** | Conventional Commits (`feat(scope): desc`), branch naming (`feature/`, `fix/`), PR standartlari |
-| **coding-style.md** | camelCase (JS/TS), snake_case (Python), PascalCase (class), import sirasi, max 300 satir/dosya |
-| **testing.md** | Yeni feature = test zorunlu, AAA pattern, %80 unit / %60 integration coverage, test pyramid |
-| **security.md** | Secret ASLA hardcode edilmez, OWASP top 10 korumalari, dependency audit her deploy oncesi |
-| **performance.md** | LCP < 2.5s, INP < 200ms, CLS < 0.1, JS bundle < 200KB gzip, N+1 query yasak |
-
----
-
-## Contexts (3)
-
-Gorev tipine gore davranis ayarlari:
-
-| Context | Ne Zaman | Davranis |
-|---------|----------|----------|
-| **dev.md** | Yeni kod yazarken, prototip | Hizli iterasyon, debug-friendly, hot reload |
-| **review.md** | PR review, kod inceleme | SOLID checklist, breaking change tespiti, severity seviyeleri |
-| **research.md** | Teknoloji karsilastirma, analiz | Tablo formati, evidence-based, pros/cons, kaynak gosterme |
+| Kural | Ne Dayatır |
+|-------|------------|
+| **git-workflow.md** | Conventional Commits formatı (`feat(scope): description`), branch naming (`feature/`, `fix/`, `hotfix/`), PR standartları (başlık < 70 karakter, squash merge tercih) |
+| **coding-style.md** | camelCase (JS/TS), snake_case (Python), PascalCase (class/component), import sırası (stdlib → external → internal → relative), dosya başına max 300 satır |
+| **testing.md** | Yeni feature = test zorunlu, AAA pattern (Arrange-Act-Assert), %80 unit / %60 integration coverage hedefi, test pyramid (70% unit, 20% integration, 10% E2E) |
+| **security.md** | Secret ASLA hardcode edilmez, tüm kullanıcı girdileri sanitize edilir, SQL parametrize, XSS encode, CSRF token zorunlu, dependency audit her deploy öncesi |
+| **performance.md** | LCP < 2.5s, INP < 200ms, CLS < 0.1, JS bundle < 200KB (gzip), N+1 query kesinlikle yasak, lazy loading zorunlu, WebP/AVIF tercih |
 
 ---
 
-## Scripts (6)
+## Context Modları (3)
 
-### Validation & Verification
+Görev tipine göre Claude'un davranışını ayarlayan mod tanımları. Geliştirme yaparken hız, review yaparken titizlik, araştırma yaparken derinlik ön plana çıkar.
+
+| Context | Ne Zaman Aktif | Davranış Değişikliği |
+|---------|----------------|----------------------|
+| **dev.md** | Yeni kod yazarken, prototipleme | Hızlı iterasyon öncelikli. Debug-friendly çıktı, hot reload önerileri, `console.log` / `print()` ile hızlı debugging. "Çalışan > mükemmel" prensibi. |
+| **review.md** | PR review, kod inceleme | Kalite checklist'i aktif: SOLID prensipleri, güvenlik, performans, okunabilirlik. Breaking change tespiti. Her bulgu severity seviyesiyle (Critical → Nit) raporlanır. |
+| **research.md** | Teknoloji karşılaştırma, problem araştırma | Derinlemesine analiz modu. Karşılaştırma tabloları, evidence-based öneriler, pros/cons formatı. 2024-2026 kaynaklarına öncelik. Her zaman actionable sonuç. |
+
+---
+
+## Script'ler (6)
+
+Terminalde çalıştırabileceğiniz otomasyon araçları.
+
+### Doğrulama ve Denetim
 
 ```bash
-# Hizli dogrulama (gelistirme sirasinda)
+# Hızlı doğrulama (geliştirme sırasında, her commit öncesi)
 python .agent/scripts/checklist.py .
-# Kontrol eder: Security, Lint, Schema, Test, UX, SEO
+# → Security, Lint, Schema, Test, UX, SEO kontrolü
 
-# Kapsamli dogrulama (deploy oncesi)
+# Kapsamlı doğrulama (deploy öncesi, release kontrol)
 python .agent/scripts/verify_all.py . --url http://localhost:3000
-# Ek kontroller: Lighthouse, Playwright E2E, Bundle, Mobile, i18n
+# → Yukarıdakilere ek: Lighthouse, Playwright E2E, Bundle analizi, Mobile audit, i18n kontrolü
 ```
 
-### Dev Server
+### Dev Server Yönetimi
 
 ```bash
-python .agent/scripts/auto_preview.py start [port]   # Dev server baslat
+python .agent/scripts/auto_preview.py start [port]   # Dev server başlat
 python .agent/scripts/auto_preview.py stop            # Durdur
 python .agent/scripts/auto_preview.py status          # Durum kontrol
 ```
 
-### Project Analysis
+### Proje Analizi
 
 ```bash
-python .agent/scripts/session_manager.py status .     # Proje durumu
-python .agent/scripts/session_manager.py info .       # Tech stack bilgisi
+python .agent/scripts/session_manager.py status .     # Proje sağlık durumu
+python .agent/scripts/session_manager.py info .       # Tech stack detayları
 ```
 
-### Package Manager Detection
+### Package Manager Tespiti
 
 ```bash
-python .agent/scripts/detect_pm.py                    # Tespit edilen PM (npm/yarn/pnpm/bun)
-python .agent/scripts/detect_pm.py --install          # Install komutu
-python .agent/scripts/detect_pm.py --run dev           # Run komutu
-python .agent/scripts/detect_pm.py --test             # Test komutu
-python .agent/scripts/detect_pm.py --json             # Tum komutlar JSON
+python .agent/scripts/detect_pm.py                    # Tespit: npm / yarn / pnpm / bun
+python .agent/scripts/detect_pm.py --install          # Doğru install komutu
+python .agent/scripts/detect_pm.py --run dev          # Doğru run komutu
+python .agent/scripts/detect_pm.py --test             # Doğru test komutu
+python .agent/scripts/detect_pm.py --json             # Tüm komutlar JSON formatında
 ```
 
-Tespit sirasi: lockfile > package.json `packageManager` > `CLAUDE_PACKAGE_MANAGER` env var > npm fallback
+Tespit öncelik sırası: lockfile → `package.json` packageManager alanı → `CLAUDE_PACKAGE_MANAGER` env var → npm fallback
 
 ---
 
-## MCP Configuration
+## MCP Konfigürasyonu
 
-Ornek MCP sunucu konfigurasyonu `.agent/mcp_config.json.example` dosyasinda:
+Model Context Protocol sunucu örnek konfigürasyonu `.agent/mcp_config.json.example` dosyasında yer alır:
 
 ```json
 {
@@ -409,77 +401,91 @@ Ornek MCP sunucu konfigurasyonu `.agent/mcp_config.json.example` dosyasinda:
 }
 ```
 
-Kullanmak icin `mcp_config.json.example` dosyasini `mcp_config.json` olarak kopyalayin ve API key'lerinizi girin. `.gitignore` `mcp_config.json` dosyasini zaten haric tutar.
+Kullanmak için `mcp_config.json.example` dosyasını `mcp_config.json` olarak kopyalayın ve API key'lerinizi girin. `.gitignore` bu dosyayı zaten hariç tutar -- secret'larınız güvende.
 
 ---
 
-## How It Works
+## Nasıl Çalışır?
 
-### 1. Istek Siniflandirma (TIER 0)
+### 1. İstek Sınıflandırma
 
-Her istek oncelikle siniflandirilir:
+Her istek önce otomatik sınıflandırılır ve doğru işleme yönlendirilir:
 
-| Tip | Tetikleyici | Sonuc |
-|-----|------------|-------|
-| QUESTION | "ne", "nasil", "acikla" | Metin yanit |
-| SURVEY | "analiz et", "listele" | Explore agent ile analiz |
-| SIMPLE CODE | "duzelt", "ekle" (tek dosya) | Inline edit |
-| COMPLEX CODE | "olustur", "implement et" | Plan dosyasi + multi-agent |
-| DESIGN | "tasarla", "UI", "dashboard" | Plan + design agent |
+| Tip | Tetikleyen İfadeler | Ne Olur |
+|-----|---------------------|---------|
+| **Soru** | "ne", "nasıl", "açıkla", "fark ne" | Direkt metin yanıt, agent yüklenmez |
+| **Araştırma** | "analiz et", "listele", "karşılaştır" | Explore agent ile derinlemesine analiz |
+| **Basit Kod** | "düzelt", "ekle", "değiştir" (tek dosya) | İlgili agent + inline düzenleme |
+| **Karmaşık Kod** | "oluştur", "implement et", "yap" | Plan dosyası + multi-agent koordinasyon |
+| **Tasarım** | "tasarla", "UI", "dashboard", "sayfa" | Plan + design agent + UI/UX skill'leri |
 
-### 2. Sokratik Kapi (Brainstorming)
+### 2. Sokratik Kapı
 
-Karmasik isteklerde Claude otomatik olarak durur ve soru sorar:
+Karmaşık isteklerde (`brainstorming` skill'i otomatik devrede) Claude kodlamaya başlamadan önce durur ve mimari kararları netleştirmek için soru sorar:
 
 ```
-Kullanici: "E-commerce sitesi yap"
+Kullanıcı: "E-commerce sitesi yap"
 
-Claude (brainstorming skill aktif):
-- Tek satici mi, cok satici mi? (Mimari karari)
-- Odeme yontemi? (Stripe vs LemonSqueezy - maliyet/karmasiklik)
-- Fiziksel mi dijital mi? (Kargo API vs indirme linkleri)
+Claude:
+┌─ CRITICAL: Tek satıcı mı, çok satıcı mı?
+│  → Çok satıcı: komisyon mantığı, satıcı dashboard'u, split payment gerekir
+│  → Tek satıcı: daha basit mimari, 3x daha hızlı geliştirme
+│
+├─ CRITICAL: Ödeme yöntemi?
+│  → Stripe: %2.9 + $0.30, en iyi dokümantasyon, ABD odaklı
+│  → LemonSqueezy: %5 + $0.50, global vergi yönetimi dahil
+│
+└─ HIGH-LEVERAGE: Fiziksel mi dijital mi?
+   → Fiziksel: kargo API entegrasyonu, takip sistemi gerekir
+   → Dijital: indirme linkleri, lisans yönetimi yeterli
 ```
 
-Minimum 3 soru sorulur. Cevap alinmadan kodlamaya baslanmaz.
+Minimum 3 soru sorulur. Cevap alınmadan kodlamaya **başlanmaz**.
 
 ### 3. Agent Routing
 
+İstek sınıflandırıldıktan sonra doğru uzman otomatik seçilir:
+
 ```
-Frontend gorevi --> frontend-specialist.md
-                        |
-                        v
-                   skills: [react-best-practices, frontend-design, tailwind-patterns]
-                        |
-                        v
-                   Her skill'in SKILL.md'si yuklenir
-                        |
-                        v
-                   Agent persona + skill bilgisi ile cikti uretilir
+Frontend görevi
+    │
+    ▼
+frontend-specialist.md okunur
+    │
+    ▼
+skills: [react-best-practices, frontend-design, tailwind-patterns] yüklenir
+    │
+    ▼
+Agent persona + skill bilgisi + always-on kurallar ile çıktı üretilir
 ```
 
-### 4. Multi-Agent Orchestration
+### 4. Multi-Agent Orkestrasyon
 
-3+ domain iceren gorevlerde `orchestrator` agent devreye girer:
+3+ alanı kapsayan görevlerde `orchestrator` agent tüm süreci yönetir:
 
 ```
 /orchestrate full-stack auth
-    |
-    v
+    │
+    ▼
 Orchestrator:
-  1. project-planner --> Plan olustur
-  2. backend-specialist --> API endpoints
-  3. frontend-specialist --> Login UI
-  4. security-auditor --> Auth review
-  5. test-engineer --> Test suite
+  Faz 1 (Planlama):    project-planner → Görev kırılımı ve bağımlılık haritası
+  Faz 2 (İmplementasyon):
+    ├── backend-specialist  → API endpoints, JWT, session yönetimi
+    ├── frontend-specialist → Login/register UI, form validasyonu
+    ├── database-architect  → User tablosu, session tablosu, migration
+    └── security-auditor    → Auth flow review, OWASP kontrol
+  Faz 3 (Doğrulama):   test-engineer → Unit + integration + E2E test suite
 ```
 
 ---
 
-## Customization
+## Özelleştirme
+
+BDK tamamen modülerdir. Kendi agent, skill, workflow ve hook'larınızı ekleyebilirsiniz.
 
 ### Yeni Agent Ekleme
 
-`agents/` dizinine yeni `.md` dosyasi ekleyin:
+`agents/` dizinine yeni bir `.md` dosyası ekleyin:
 
 ```markdown
 ---
@@ -490,83 +496,83 @@ skills:
 ---
 
 ## Persona
-...
+[Agent'ın uzmanlığını ve davranış tarzını tanımlayın]
 
-## Ilkeler
-...
+## İlkeler
+[Uyması gereken kuralları listeleyin]
 ```
 
 ### Yeni Skill Ekleme
 
-`.claude/skills/my-skill/SKILL.md` olusturun:
+`.claude/skills/my-skill/SKILL.md` oluşturun:
 
 ```markdown
 ---
 name: my-skill
-description: "Skill aciklamasi"
+description: "Bu skill'in ne yaptığının kısa açıklaması"
 user-invocable: false
 ---
 
-# Skill Basligi
+# Skill Başlığı
 
-Skill icerigi...
+[Domain-specific bilgi, kurallar, pattern'ler, referanslar]
 ```
 
-### Yeni Workflow Ekleme
+### Yeni Workflow (Slash Command) Ekleme
 
-`workflows/my-command.md` olusturun:
+`workflows/my-command.md` oluşturun:
 
 ```markdown
 ---
-description: Komut aciklamasi
+description: Bu komutun ne yaptığının kısa açıklaması
 ---
 
-# /my-command
+# /my-command - Komut Başlığı
 
 $ARGUMENTS
 
 ## Behavior
-...
+[Komut tetiklendiğinde yapılacak adımlar]
 ```
 
-### Hook Ekleme/Cikarma
+### Hook Ekleme / Kaldırma
 
-`.claude/settings.json` dosyasini duzenleyin. Yeni hook eklemek icin ilgili event'e yeni bir entry ekleyin. Hooks'u tamamen kapatmak icin:
+`.claude/settings.json` dosyasını düzenleyin. Tüm hook'ları kapatmak için:
 
 ```json
-{
-  "disableAllHooks": true
-}
+{ "disableAllHooks": true }
 ```
 
 ---
 
-## Statistics
+## Gereksinimler
 
-| Metrik | Deger |
+| Gereksinim | Açıklama |
+|-----------|----------|
+| **Claude Code** veya **Google Gemini** | AI assistant olarak (zorunlu) |
+| **Python 3.8+** | Script'ler için (checklist, verify, detect_pm) |
+| **bash** | Hook script'leri için |
+| **jq** | Hook'larda JSON parsing (önerilen, zorunlu değil) |
+
+---
+
+## İstatistikler
+
+| Metrik | Değer |
 |--------|-------|
-| Agents | 23 |
-| Skills | 96 |
-| Workflows | 15 |
-| Scripts | 6 |
-| Hooks | 4 |
-| Always-On Rules | 5 |
-| Contexts | 3 |
-| Desteklenen Diller | Python, TypeScript, JavaScript, Rust, Go, Java, C++, Swift |
-| Desteklenen Frameworkler | React, Next.js, FastAPI, Express, Django, Flutter, Unity, Godot |
-| Desteklenen Platformlar | Claude Code, Gemini |
+| Agent sayısı | 23 |
+| Skill sayısı | 96 |
+| Workflow sayısı | 15 |
+| Script sayısı | 6 |
+| Hook sayısı | 4 |
+| Always-On kural sayısı | 5 |
+| Context modu sayısı | 3 |
+| Desteklenen diller | Python, TypeScript, JavaScript, Rust, Go, Java, C++, Swift |
+| Desteklenen framework'ler | React, Next.js, FastAPI, Express, Django, Flutter, Unity, Godot |
+| Desteklenen platformlar | Claude Code, Gemini |
 
 ---
 
-## Requirements
-
-- **Claude Code** veya **Google Gemini** (AI assistant olarak)
-- **Python 3.8+** (script'ler icin)
-- **bash** (hook script'leri icin)
-- **jq** (hook'larda JSON parsing icin - opsiyonel ama onerilen)
-
----
-
-## License
+## Lisans
 
 MIT
