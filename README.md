@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/bdk-banner.png" alt="Bilge Development Kit" width="100%">
+  <img src="assets/bdk-banner.png" alt="Bilge Development Kit" width="600">
 </p>
 
 <p align="center">
