@@ -8,10 +8,11 @@
 
 Bilge Development Kit is a modular system consisting of:
 
-- **23 Specialist Agents** - Role-based AI personas
-- **96 Skills** - Domain-specific knowledge modules
+- **22 Specialist Agents** - Role-based AI personas
+- **56 Core Skills** - Domain-specific knowledge modules
+- **37 Extra Skills** - Niche/framework-specific modules (optional)
 - **15 Workflows** - Slash command procedures
-- **6 Scripts** - Automation and validation tools
+- **5 Scripts** - Automation and validation tools
 - **4 Hooks** - Automated guardrails (secret scanning, dangerous cmd detection)
 - **5 Rules** - Always-on coding standards
 - **3 Contexts** - Mode-specific behavior (dev, review, research)
@@ -23,12 +24,14 @@ Bilge Development Kit is a modular system consisting of:
 ```plaintext
 .agent/
 ├── ARCHITECTURE.md          # This file
+├── README.md                # Project documentation
 ├── mcp_config.json.example  # MCP configuration example
 ├── .gitignore               # Git ignore rules
 ├── .shared/                 # Shared assets across skills
 │   └── ui-ux-pro-max/      # Shared UI/UX resources
-├── agents/                  # 23 Specialist Agents
-├── skills/                  # 96 Skills + doc.md guide
+├── agents/                  # 22 Specialist Agents
+├── skills/                  # 56 Core Skills (agent-referenced)
+├── skills-extra/            # 37 Extra Skills (niche/optional)
 ├── workflows/               # 15 Slash Commands
 ├── rules/                   # Global Rules + Always-On Standards
 │   ├── CLAUDE.md            # Claude Code protocol rules
@@ -43,7 +46,7 @@ Bilge Development Kit is a modular system consisting of:
 │   ├── dev.md               # Development mode
 │   ├── review.md            # Code review mode
 │   └── research.md          # Research/analysis mode
-├── scripts/                 # 6 Automation Scripts
+├── scripts/                 # 5 Automation Scripts
 │   ├── hooks/               # Hook scripts (guardrails)
 │   │   ├── dangerous_cmd_check.sh  # Block destructive commands
 │   │   ├── secret_scanner.sh       # Detect hardcoded secrets
@@ -55,12 +58,14 @@ Bilge Development Kit is a modular system consisting of:
 │   ├── auto_preview.py      # Dev server management
 │   └── session_manager.py   # Project state analysis
 └── .claude/
-    └── settings.json        # Hooks configuration
+    ├── settings.json        # Hooks configuration
+    └── skills/              # 13 Workflow Skills (Claude Code format)
+
 ```
 
 ---
 
-## Agents (23)
+## Agents (22)
 
 Specialist AI personas for different domains.
 
@@ -84,61 +89,29 @@ Specialist AI personas for different domains.
 | `performance-optimizer`  | Speed, Web Vitals, profiling       |
 | `seo-specialist`         | Ranking, visibility, SEO           |
 | `documentation-writer`   | Technical docs, manuals            |
-| `product-manager`        | Requirements, user stories         |
-| `product-owner`          | Strategy, backlog, MVP             |
+| `product-owner`          | Strategy, backlog, MVP, requirements |
 | `api-designer`           | REST, GraphQL, gRPC API design     |
 | `code-archaeologist`     | Legacy code, refactoring           |
 | `explorer-agent`         | Codebase discovery, deep analysis  |
 
 ---
 
-## Skills (95)
+## Skills
 
-Modular knowledge domains that agents can load on-demand based on task context.
+### Core Skills (56)
 
-### AI & LLM
+Skills actively referenced by agents. Loaded on-demand based on task context.
 
-| Skill                              | Description                                      |
-| ---------------------------------- | ------------------------------------------------ |
-| `ai-engineer`                      | Production-ready LLM apps, RAG systems           |
-| `ai-agents-architect`              | Autonomous AI agent design, tool use, memory      |
-| `ai-product`                       | AI-powered product patterns, LLM integration     |
-| `ai-wrapper-product`               | Building products wrapping AI APIs               |
-| `agent-evaluation`                 | LLM agent testing and benchmarking               |
-| `agent-manager-skill`              | Multi-agent tmux session management              |
-| `agent-memory-mcp`                 | Hybrid memory system for AI agents               |
-| `agent-memory-systems`             | Agent memory architecture (short/long-term)      |
-| `agent-tool-builder`               | Tools for AI agent interaction                   |
-| `agents-v2-py`                     | Azure AI Foundry container-based agents          |
-| `computer-use-agents`              | AI agents that interact with computer screens    |
-| `computer-vision-expert`           | YOLO, SAM, Vision Language Models                |
-| `deep-research`                    | Autonomous multi-step research with Gemini       |
-| `intelligent-routing`              | Automatic agent selection and task routing        |
-| `langchain-architecture`           | LangChain/LangGraph LLM app design              |
-| `langfuse`                         | LLM observability, tracing, evaluation           |
-| `langgraph`                        | Stateful multi-actor AI applications             |
-| `llm-app-patterns`                 | Production RAG, agent, and AI assistant patterns |
-| `llm-application-dev-prompt-optimize` | Advanced prompt engineering techniques        |
-| `llm-evaluation`                   | LLM evaluation strategies and metrics            |
-| `rag-engineer`                     | RAG systems, embeddings, vector databases        |
-| `rag-implementation`               | RAG with vector databases and semantic search    |
-| `research-engineer`                | Academic research, formal verification           |
-| `tool-design`                      | Building tools for agent use                     |
-
-### Backend & API
+#### Backend & API
 
 | Skill                              | Description                                      |
 | ---------------------------------- | ------------------------------------------------ |
 | `api-patterns`                     | REST, GraphQL, tRPC design principles            |
-| `api-design-principles`            | Scalable, maintainable API design                |
 | `api-security-best-practices`      | API auth, validation, rate limiting              |
-| `api-testing-observability-api-mock` | Realistic API mocking for dev/test             |
 | `backend-dev-guidelines`           | Node.js + Express + TypeScript standards         |
-| `fastapi-pro`                      | High-performance async APIs with FastAPI         |
-| `fastapi-templates`                | Production-ready FastAPI project scaffolding     |
 | `nodejs-best-practices`            | Node.js async, error handling, security          |
 
-### Frontend & UI
+#### Frontend & UI
 
 | Skill                   | Description                                                 |
 | ----------------------- | ----------------------------------------------------------- |
@@ -147,13 +120,13 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `tailwind-patterns`     | Tailwind CSS utilities, responsive design, themes           |
 | `web-design-guidelines` | Responsive design, accessibility (WCAG), web performance    |
 
-### Database
+#### Database
 
 | Skill             | Description                               |
 | ----------------- | ----------------------------------------- |
 | `database-design` | Schema design, indexing, migrations       |
 
-### Python
+#### Python
 
 | Skill                    | Description                                 |
 | ------------------------ | ------------------------------------------- |
@@ -161,17 +134,7 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `python-packaging`       | Package distribution, PyPI publishing       |
 | `python-testing-patterns`| pytest, fixtures, mocking, TDD             |
 
-### Data & ML
-
-| Skill               | Description                                  |
-| -------------------- | -------------------------------------------- |
-| `data-engineer`      | Data pipelines, Spark, dbt, Airflow          |
-| `data-scientist`     | Advanced analytics, machine learning         |
-| `ml-engineer`        | Production ML with PyTorch, TensorFlow       |
-| `mlops-engineer`     | ML pipelines, experiment tracking            |
-| `airflow-dag-patterns` | Apache Airflow DAGs and best practices     |
-
-### DevOps & Infrastructure
+#### DevOps & Infrastructure
 
 | Skill                              | Description                              |
 | ---------------------------------- | ---------------------------------------- |
@@ -179,13 +142,10 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `deployment-validation-config-validate` | Configuration validation and testing |
 | `devops-troubleshooter`            | Rapid incident troubleshooting           |
 | `server-management`               | Process management, monitoring, scaling  |
-| `grafana-dashboards`              | Grafana dashboard creation               |
 | `monitoring-observability`        | Logging, tracing, alerting, SLI/SLO      |
-| `prometheus-configuration`        | Prometheus metric collection setup       |
 | `secrets-management`              | Vault, AWS Secrets Manager, CI/CD secrets|
-| `hugging-face-cli`                | Hugging Face Hub CLI operations          |
 
-### Testing & Quality
+#### Testing & Quality
 
 | Skill                          | Description                            |
 | ------------------------------ | -------------------------------------- |
@@ -198,14 +158,14 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `unit-testing-test-generate`   | Comprehensive unit test generation     |
 | `verification-before-completion` | Verify before claiming work done     |
 
-### Security
+#### Security
 
 | Skill                   | Description                             |
 | ----------------------- | --------------------------------------- |
 | `vulnerability-scanner` | SAST/DAST, dependency auditing, CVE     |
 | `red-team-tactics`      | Offensive security, penetration testing |
 
-### Architecture & Planning
+#### Architecture & Planning
 
 | Skill                          | Description                              |
 | ------------------------------ | ---------------------------------------- |
@@ -214,20 +174,17 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `architecture-decision-records`| ADR documentation                        |
 | `plan-writing`                 | Structured task planning, breakdowns     |
 | `brainstorming`                | Socratic questioning, design review      |
-| `project-development`          | LLM project structure, pipeline design   |
 
-### Code Quality & Refactoring
+#### Code Quality & Refactoring
 
 | Skill                              | Description                               |
 | ---------------------------------- | ----------------------------------------- |
 | `clean-code`                       | Clean Code principles (Robert C. Martin)  |
 | `refactoring-patterns`             | Extract method, strategy, strangler fig   |
-| `code-refactoring-refactor-clean`  | SOLID design patterns refactoring         |
 | `code-refactoring-tech-debt`       | Technical debt identification, prioritization |
-| `code-refactoring-context-restore` | Code refactoring context restore          |
 | `codebase-cleanup-deps-audit`     | Dependency security, license compliance   |
 
-### Documentation
+#### Documentation
 
 | Skill                              | Description                               |
 | ---------------------------------- | ----------------------------------------- |
@@ -237,21 +194,21 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `readme`                           | README.md creation and updates            |
 | `writing-skills`                   | Creating and editing BDK skills           |
 
-### Mobile & Game
+#### Mobile & Game
 
 | Skill              | Description                               |
 | ------------------ | ----------------------------------------- |
 | `mobile-design`    | Mobile UI/UX, iOS HIG, Material Design    |
 | `game-development` | Game architecture, engines, mechanics     |
 
-### SEO & Growth
+#### SEO & Growth
 
 | Skill              | Description                           |
 | ------------------ | ------------------------------------- |
 | `seo-fundamentals` | SEO, meta tags, structured data       |
 | `geo-fundamentals` | Generative Engine Optimization (GEO)  |
 
-### Shell/CLI
+#### Shell/CLI
 
 | Skill                  | Description                    |
 | ---------------------- | ------------------------------ |
@@ -259,20 +216,20 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `powershell-windows`   | Windows PowerShell patterns    |
 | `linux-shell-scripting`| Production shell scripts       |
 
-### Rust
+#### Rust
 
 | Skill      | Description                                 |
 | ---------- | ------------------------------------------- |
 | `rust-pro` | Ownership, lifetimes, async, concurrency    |
 
-### Caching & Performance
+#### Caching & Performance
 
 | Skill                   | Description                          |
 | ----------------------- | ------------------------------------ |
 | `caching-patterns`      | Browser, CDN, Redis cache strategies |
 | `performance-profiling` | Measurement, analysis, optimization  |
 
-### Agent Behavior
+#### Agent Behavior
 
 | Skill              | Description                       |
 | ------------------ | --------------------------------- |
@@ -280,15 +237,24 @@ Modular knowledge domains that agents can load on-demand based on task context.
 | `parallel-agents`  | Multi-agent orchestration         |
 | `mcp-builder`      | Model Context Protocol servers    |
 
+### Extra Skills (37) — `skills-extra/`
+
+Niche, framework-specific, or specialized skills. Not loaded by default agents but available for manual use.
+
+Includes: AI/LLM tools (langchain, langfuse, langgraph, rag-engineer, llm-evaluation), ML/Data (ml-engineer, mlops-engineer, data-scientist, airflow-dag-patterns), Monitoring (grafana-dashboards, prometheus-configuration), Agent tools (agent-memory-mcp, agent-tool-builder, agent-evaluation), and more.
+
+Move any skill from `skills-extra/` to `skills/` and reference it in an agent's frontmatter to activate it.
+
 ---
 
-## Workflows (14)
+## Workflows (15)
 
 Slash command procedures. Invoke with `/command`.
 
 | Command          | Description              |
 | ---------------- | ------------------------ |
 | `/brainstorm`    | Socratic discovery       |
+| `/build-fix`     | Build error resolver     |
 | `/create`        | Create new features      |
 | `/debug`         | Debug issues             |
 | `/deploy`        | Deploy application       |
@@ -302,18 +268,17 @@ Slash command procedures. Invoke with `/command`.
 | `/status`        | Check project status     |
 | `/test`          | Run tests                |
 | `/ui-ux-pro-max` | Design with 50 styles    |
-| `/build-fix`     | Build error resolver     |
 
 ---
 
 ## Skill Loading Protocol
 
 ```plaintext
-User Request → Skill Description Match → Load SKILL.md
-                                            ↓
-                                    Read references/
-                                            ↓
-                                    Read scripts/
+User Request → Agent Selection → Load skills from frontmatter
+                                        ↓
+                                Read SKILL.md (index)
+                                        ↓
+                                Read specific sections
 ```
 
 ### Skill Structure
@@ -328,7 +293,7 @@ skill-name/
 
 ---
 
-## Scripts (6)
+## Scripts (5)
 
 Automation and validation scripts.
 
@@ -339,45 +304,6 @@ Automation and validation scripts.
 | `auto_preview.py`    | Dev server management (start/stop/status)    | Local preview, testing    |
 | `session_manager.py` | Project state analysis, tech stack detection | Session info, diagnostics |
 | `detect_pm.py`       | Package manager auto-detection               | Build/test/deploy commands|
-
-### Usage
-
-```bash
-# Quick validation during development
-python .agent/scripts/checklist.py .
-
-# Full verification before deployment
-python .agent/scripts/verify_all.py . --url http://localhost:3000
-
-# Manage local dev server
-python .agent/scripts/auto_preview.py start [port]
-python .agent/scripts/auto_preview.py stop
-python .agent/scripts/auto_preview.py status
-
-# Analyze project state
-python .agent/scripts/session_manager.py status [path]
-python .agent/scripts/session_manager.py info [path]
-```
-
-### What They Check
-
-**checklist.py** (Core checks):
-
-- Security (vulnerabilities, secrets)
-- Code Quality (lint, types)
-- Schema Validation
-- Test Suite
-- UX Audit
-- SEO Check
-
-**verify_all.py** (Full suite):
-
-- Everything in checklist.py PLUS:
-- Lighthouse (Core Web Vitals)
-- Playwright E2E
-- Bundle Analysis
-- Mobile Audit
-- i18n Check
 
 ---
 
@@ -424,10 +350,11 @@ Mode-specific behavior adjustments in `contexts/`. Load based on task type.
 
 | Metric              | Value  |
 | ------------------- | ------ |
-| **Total Agents**    | 23     |
-| **Total Skills**    | 96     |
+| **Total Agents**    | 22     |
+| **Core Skills**     | 56     |
+| **Extra Skills**    | 37     |
 | **Total Workflows** | 15     |
-| **Total Scripts**   | 6      |
+| **Total Scripts**   | 5      |
 | **Total Hooks**     | 4      |
 | **Total Rules**     | 5      |
 | **Total Contexts**  | 3      |
@@ -446,7 +373,6 @@ Mode-specific behavior adjustments in `contexts/`. Load based on task type.
 | Testing  | `test-engineer`       | testing-patterns, webapp-testing      |
 | Debug    | `debugger`            | systematic-debugging                  |
 | Plan     | `project-planner`     | brainstorming, plan-writing           |
-| AI/LLM   | `ai-engineer`         | ai-engineer, rag-engineer             |
-| Data     | `data-engineer`       | data-engineer, python-patterns        |
+| AI/LLM   | `ai-engineer`         | architecture, api-patterns            |
 | DevOps   | `devops-engineer`     | deployment-procedures                 |
 | Pentest  | `penetration-tester`  | red-team-tactics                      |

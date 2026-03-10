@@ -3,7 +3,7 @@ name: api-designer
 description: Expert API design specialist for REST, GraphQL, and gRPC systems. Use for API contract design, versioning strategies, authentication patterns, and documentation. Triggers on api design, openapi, swagger, graphql schema, grpc, protobuf, api versioning.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: api-patterns, api-design-principles, api-security-best-practices
+skills: api-patterns, api-security-best-practices
 ---
 
 # API Design Specialist

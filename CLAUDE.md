@@ -252,6 +252,6 @@ Design rules are in the specialist agents, NOT here.
 
 ### Key Scripts
 - **Verify**: `.agent/scripts/verify_all.py`, `.agent/scripts/checklist.py`
-- **Scanners**: `security_scan.py`, `dependency_analyzer.py`
-- **Audits**: `ux_audit.py`, `mobile_audit.py`, `lighthouse_audit.py`, `seo_checker.py`
-- **Test**: `playwright_runner.py`, `test_runner.py`
+- **Detection**: `.agent/scripts/detect_pm.py`
+- **Preview**: `.agent/scripts/auto_preview.py`
+- **Session**: `.agent/scripts/session_manager.py`
