@@ -5,6 +5,18 @@
 
 ---
 
+## MEMORY BANK (Session Start)
+
+**At the start of every session**, check if `.agent/.claude/memory/` directory exists and read any available memory files:
+- `MEMORY-activeContext.md` — current work state, recent sessions
+- `MEMORY-patterns.md` — established code patterns and conventions
+- `MEMORY-decisions.md` — architecture decision records
+- `MEMORY-troubleshooting.md` — solved issues and lessons learned
+
+Use this context to avoid re-discovering information. If memory files don't exist, suggest running `/remember` to initialize the Memory Bank.
+
+---
+
 ## CRITICAL: AGENT & SKILL PROTOCOL (START HERE)
 
 **MANDATORY:** You MUST read the appropriate agent file and its skills BEFORE performing any implementation.
