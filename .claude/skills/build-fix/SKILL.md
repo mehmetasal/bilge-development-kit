@@ -1,7 +1,7 @@
 ---
 name: build-fix
 description: "Build error diagnosis and resolution. Parses compiler/bundler errors, identifies patterns, and applies targeted fixes."
-user-invocable: false
+user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Edit, Write
 ---
 
