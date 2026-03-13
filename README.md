@@ -71,10 +71,18 @@ BDK bu boşluğu doldurur:
 
 ### 1. Projenize ekleyin
 
+**Bash (macOS / Linux / Git Bash):**
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
 cp -r bilge-development-kit/.claude your-project/.claude   # Slash komutları için
+```
+
+**PowerShell (Windows):**
+```powershell
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+Copy-Item -Recurse bilge-development-kit your-project\.agent
+Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude   # Slash komutları için
 ```
 
 ### 2. Platforma göre ayarlayın

@@ -71,10 +71,18 @@ BDK fills this gap:
 
 ### 1. Add to your project
 
+**Bash (macOS / Linux / Git Bash):**
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
 cp -r bilge-development-kit/.claude your-project/.claude   # For slash commands
+```
+
+**PowerShell (Windows):**
+```powershell
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+Copy-Item -Recurse bilge-development-kit your-project\.agent
+Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude   # For slash commands
 ```
 
 ### 2. Configure for your platform
