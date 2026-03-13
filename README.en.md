@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Agents-22-blue" alt="Agents">
   <img src="https://img.shields.io/badge/Core_Skills-56-green" alt="Core Skills">
   <img src="https://img.shields.io/badge/Extra_Skills-37-lightgrey" alt="Extra Skills">
-  <img src="https://img.shields.io/badge/Workflows-16-orange" alt="Workflows">
+  <img src="https://img.shields.io/badge/Workflows-17-orange" alt="Workflows">
   <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
   <br>
   <img src="https://img.shields.io/badge/Claude_Code-Compatible-blueviolet" alt="Claude Code">
@@ -26,7 +26,7 @@
 BDK is a modular toolkit that gives AI coding assistants like Claude Code and Gemini expert behaviors, automatic security guardrails, and structured workflows. It has zero runtime dependencies -- it's entirely made of markdown files and shell scripts. Copy the `.agent/` directory into your project, and your AI assistant instantly knows which expert to invoke, which rules to apply, and which security checks to run.
 
 ```
-22 Agents | 56 Core Skills | 37 Extra Skills | 16 Workflows | 4 Hooks | 5 Rules | 3 Contexts
+22 Agents | 56 Core Skills | 37 Extra Skills | 17 Workflows | 4 Hooks | 5 Rules | 3 Contexts
 ```
 
 ---
@@ -38,7 +38,7 @@ BDK is a modular toolkit that gives AI coding assistants like Claude Code and Ge
 - [Architecture](#architecture)
 - [Agents (22)](#agents-22)
 - [Skills (56 Core + 37 Extra)](#skills-56-core--37-extra)
-- [Slash Commands (19)](#slash-commands-19)
+- [Slash Commands (20)](#slash-commands-20)
 - [Hooks -- Automatic Guardrails (4)](#hooks----automatic-guardrails-4)
 - [Memory Bank](#memory-bank--cross-session-persistence)
 - [Always-On Rules (5)](#always-on-rules-5)
@@ -85,6 +85,7 @@ cp -r bilge-development-kit your-project/.agent
 ### 3. Start using
 
 ```
+/onboard                              # Scan project, generate CLAUDE.md, init Memory Bank
 /brainstorm authentication system     # Compare different approaches
 /plan e-commerce MVP                  # Create task breakdown
 /create user profile page             # Implement from scratch
@@ -123,14 +124,15 @@ cp -r bilge-development-kit your-project/.agent
 │
 ├── .claude/
 │   ├── settings.json            # Hooks configuration
-│   └── skills/                  # 16 Workflow Skills
+│   └── skills/                  # 17 Workflow Skills
 │       ├── brainstorm/
 │       ├── build-fix/
+│       ├── onboard/
 │       ├── plan/
 │       ├── remember/
 │       └── ...
 │
-├── workflows/                   # 16 Slash Commands
+├── workflows/                   # 17 Slash Commands
 │   ├── brainstorm.md            #   /brainstorm
 │   ├── create.md                #   /create
 │   ├── build-fix.md             #   /build-fix
@@ -286,9 +288,9 @@ AI/LLM tools (langchain, langfuse, langgraph, rag-engineer, llm-evaluation), ML/
 
 ---
 
-## Slash Commands (19)
+## Slash Commands (20)
 
-Structured workflows triggered by typing `/command` in chat. 16 workflow commands + 3 skill commands.
+Structured workflows triggered by typing `/command` in chat. 17 workflow commands + 3 skill commands.
 
 ### Workflow Commands
 
@@ -309,6 +311,7 @@ Structured workflows triggered by typing `/command` in chat. 16 workflow command
 | `/test` | Runs the test suite. Auto-detects package manager (npm/yarn/pnpm/bun), runs unit/integration/E2E tests, and reports failed tests in detail. | `/test unit` |
 | `/ui-ux-pro-max` | Creates UI/UX with 50 different design styles. Draws inspiration from CSV databases of color palettes, icon sets, graphic styles, and product layouts. Supports 12 different tech stacks (React, Flutter, SwiftUI, etc.). | `/ui-ux-pro-max dashboard` |
 | `/build-fix` | Auto-detects and fixes build/compile errors. Parses error output, matches against common patterns (missing dependency, type error, import error, version conflict), and applies fixes. Retries up to 3 iterations if unsuccessful. | `/build-fix` |
+| `/onboard` | Full project onboarding with a single command. Detects tech stack, maps directory structure, summarizes key files, generates project-specific CLAUDE.md, initializes Memory Bank, and reports issues (missing .gitignore, .env leak, no tests/CI). | `/onboard` |
 | `/remember` | Memory Bank system. Scans the project to capture patterns, architectural decisions, active context, and resolved issues into persistent files. Claude auto-reads these files when a new session opens -- providing cross-session memory. Sub-commands: `/remember context`, `/remember patterns`, `/remember decisions`, `/remember issues`, `/remember status`. | `/remember` |
 
 ### Skill Commands
@@ -641,7 +644,7 @@ Edit `.claude/settings.json`. To disable all hooks:
 | Agents | 22 |
 | Core skills | 56 |
 | Extra skills | 37 |
-| Workflows | 16 |
+| Workflows | 17 |
 | Scripts | 5 |
 | Hooks | 4 |
 | Always-On rules | 5 |
