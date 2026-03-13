@@ -74,6 +74,7 @@ BDK bu boşluğu doldurur:
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
+cp -r bilge-development-kit/.claude your-project/.claude   # Slash komutları için
 ```
 
 ### 2. Platforma göre ayarlayın

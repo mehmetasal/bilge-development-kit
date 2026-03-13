@@ -74,6 +74,7 @@ BDK fills this gap:
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
+cp -r bilge-development-kit/.claude your-project/.claude   # For slash commands
 ```
 
 ### 2. Configure for your platform
