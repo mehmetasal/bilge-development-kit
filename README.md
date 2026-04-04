@@ -71,19 +71,35 @@ BDK bu boşluğu doldurur:
 
 ### 1. Projenize ekleyin
 
+**Tek komutla kurulum (önerilen):**
+
+```bash
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+bash bilge-development-kit/install.sh your-project       # Bash
+```
+
+```powershell
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+.\bilge-development-kit\install.ps1 your-project         # PowerShell
+```
+
+<details>
+<summary>Manuel kurulum</summary>
+
 **Bash (macOS / Linux / Git Bash):**
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
-cp -r bilge-development-kit/.claude your-project/.claude   # Slash komutları için
+cp -r bilge-development-kit/.claude your-project/.claude
 ```
 
 **PowerShell (Windows):**
 ```powershell
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 Copy-Item -Recurse bilge-development-kit your-project\.agent
-Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude   # Slash komutları için
+Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude
 ```
+</details>
 
 ### 2. Platforma göre ayarlayın
 

@@ -71,19 +71,35 @@ BDK fills this gap:
 
 ### 1. Add to your project
 
+**One-command install (recommended):**
+
+```bash
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+bash bilge-development-kit/install.sh your-project       # Bash
+```
+
+```powershell
+git clone https://github.com/bugrabilge/bilge-development-kit.git
+.\bilge-development-kit\install.ps1 your-project         # PowerShell
+```
+
+<details>
+<summary>Manual install</summary>
+
 **Bash (macOS / Linux / Git Bash):**
 ```bash
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 cp -r bilge-development-kit your-project/.agent
-cp -r bilge-development-kit/.claude your-project/.claude   # For slash commands
+cp -r bilge-development-kit/.claude your-project/.claude
 ```
 
 **PowerShell (Windows):**
 ```powershell
 git clone https://github.com/bugrabilge/bilge-development-kit.git
 Copy-Item -Recurse bilge-development-kit your-project\.agent
-Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude   # For slash commands
+Copy-Item -Recurse bilge-development-kit\.claude your-project\.claude
 ```
+</details>
 
 ### 2. Configure for your platform
 
