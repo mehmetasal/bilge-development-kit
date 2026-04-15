@@ -5,6 +5,18 @@
 
 ---
 
+## MEMORY BANK (Session Start)
+
+**At the start of every session**, check if `.agent/.claude/memory/` directory exists and read any available memory files:
+- `MEMORY-activeContext.md` — current work state, recent sessions
+- `MEMORY-patterns.md` — established code patterns and conventions
+- `MEMORY-decisions.md` — architecture decision records
+- `MEMORY-troubleshooting.md` — solved issues and lessons learned
+
+Use this context to avoid re-discovering information. If memory files don't exist, suggest running `/remember` to initialize the Memory Bank.
+
+---
+
 ## CRITICAL: AGENT & SKILL PROTOCOL (START HERE)
 
 **MANDATORY:** You MUST read the appropriate agent file and its skills BEFORE performing any implementation.
@@ -74,7 +86,8 @@ Agent activated -> Check frontmatter "skills:" -> Read SKILL.md (INDEX) -> Read 
 When user's prompt is NOT in English:
 1. **Internally translate** for better comprehension
 2. **Respond in user's language** - match their communication
-3. **Code comments/variables** remain in English
+3. **Pay extra attention to native characters** — e.g. Turkish: always use ç, ğ, ı, İ, ö, ş, ü correctly. Never fall back to ASCII equivalents.
+4. **Code comments/variables** remain in English
 
 ### Clean Code (Global Mandatory)
 

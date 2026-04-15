@@ -1,7 +1,6 @@
 #!/bin/bash
 # BDK Hook: Session Context Save
-# Saves a lightweight session summary on Stop event
-# Used for memory persistence across sessions
+# Saves session summary and updates Memory Bank activeContext on Stop event
 
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
@@ -13,18 +12,45 @@ MEMORY_DIR="$CWD/.agent/.claude/memory"
 mkdir -p "$MEMORY_DIR" 2>/dev/null
 
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
-SESSION_FILE="$MEMORY_DIR/session_$TIMESTAMP.md"
+DATE=$(date +%Y-%m-%d)
 
-# Extract basic session info
-cat > "$SESSION_FILE" << EOF
-# Session: $TIMESTAMP
+# Get git context if available
+BRANCH=$(cd "$CWD" 2>/dev/null && git branch --show-current 2>/dev/null || echo "unknown")
+RECENT_COMMITS=$(cd "$CWD" 2>/dev/null && git log --oneline -5 2>/dev/null || echo "no git history")
+CHANGED_FILES=$(cd "$CWD" 2>/dev/null && git diff --name-only HEAD~1 2>/dev/null | head -10 || echo "unknown")
+
+# Update activeContext (create if missing, append session entry)
+ACTIVE_CTX="$MEMORY_DIR/MEMORY-activeContext.md"
+
+if [ ! -f "$ACTIVE_CTX" ]; then
+    cat > "$ACTIVE_CTX" << EOF
+# Active Context
+> Last updated: $DATE
+
+## Current Work
+- **Branch:** $BRANCH
+- **Status:** in progress
+
+## Recent Sessions
+EOF
+fi
+
+# Append session entry
+cat >> "$ACTIVE_CTX" << EOF
+
+### Session $DATE ($TIMESTAMP)
+- **Branch:** $BRANCH
 - **Session ID:** $SESSION_ID
-- **Working Directory:** $CWD
-- **Transcript:** $TRANSCRIPT_PATH
-- **Saved:** $(date -Iseconds)
+- **Recent commits:**
+$(echo "$RECENT_COMMITS" | sed 's/^/  - /')
+- **Files changed:**
+$(echo "$CHANGED_FILES" | sed 's/^/  - /')
 EOF
 
-# Output confirmation (fed to Claude's context)
-echo "Session context saved to $SESSION_FILE"
+# Update last-updated timestamp
+sed -i "s/> Last updated:.*/> Last updated: $DATE/" "$ACTIVE_CTX" 2>/dev/null
+
+# Output confirmation
+echo "Memory Bank updated: $ACTIVE_CTX"
 
 exit 0
